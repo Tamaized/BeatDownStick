@@ -26,11 +26,11 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid=Root.modid, name="Beat Down Stick", version=Root.version)
+@Mod(modid=Root.modid, name="Beat Down Stick", version=Root.version, dependencies = "required-before:" + TamModized.modid + "@[" + TamModized.version + ",)")
 
 public class Root {
 	
-	protected final static String version = "1.0.3a";
+	protected final static String version = "${version}";
 	public static final String modid = "BeatDownStick";
 	
 	@Instance(modid) 
