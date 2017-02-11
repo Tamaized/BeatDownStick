@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 import Tamaized.BeatDownStick.BeatDownStick;
 import Tamaized.BeatDownStick.items.ItemBeatDownStick;
-import Tamaized.BeatDownStick.items.ItemCheesyBurger;
 import Tamaized.BeatDownStick.items.ItemSuperBeatDownStick;
-import Tamaized.BeatDownStick.items.ItemSuperCheesyBurger;
 import Tamaized.TamModized.registry.ITamModel;
 import Tamaized.TamModized.registry.ITamRegistry;
 import net.minecraft.creativetab.CreativeTabs;
@@ -17,17 +15,17 @@ public class ItemRegistry implements ITamRegistry {
 
 	public static ItemBeatDownStick beatDownStick;
 	public static ItemSuperBeatDownStick superBeatDownStick;
-	public static ItemCheesyBurger cheesyBurger;
-	public static ItemSuperCheesyBurger superCheesyBurger;
+	public static ItemBeatDownStick cheesyBurger;
+	public static ItemSuperBeatDownStick superCheesyBurger;
 
 	@Override
 	public void preInit() {
 		modelList = new ArrayList<ITamModel>();
 
-		modelList.add(beatDownStick = new ItemBeatDownStick(CreativeTabs.COMBAT, "beatDownStick", 1));
-		modelList.add(superBeatDownStick = new ItemSuperBeatDownStick(CreativeTabs.COMBAT, "superBeatDownStick", 1));
-		modelList.add(cheesyBurger = new ItemCheesyBurger(CreativeTabs.COMBAT, "cheesyBurger", 1));
-		modelList.add(superCheesyBurger = new ItemSuperCheesyBurger(CreativeTabs.COMBAT, "superCheesyBurger", 1));
+		modelList.add(beatDownStick = new ItemBeatDownStick(CreativeTabs.COMBAT, "beatdownstick", 1));
+		modelList.add(superBeatDownStick = new ItemSuperBeatDownStick(CreativeTabs.COMBAT, "superbeatdownstick", 1));
+		modelList.add(cheesyBurger = new ItemBeatDownStick(CreativeTabs.COMBAT, "cheesyburger", 1));
+		modelList.add(superCheesyBurger = new ItemSuperBeatDownStick(CreativeTabs.COMBAT, "supercheesyburger", 1));
 	}
 
 	@Override

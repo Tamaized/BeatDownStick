@@ -3,11 +3,11 @@ package Tamaized.BeatDownStick;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import Tamaized.BeatDownStick.proxy.CommonProxy;
 import Tamaized.BeatDownStick.registry.DamageSourceRegistry;
 import Tamaized.BeatDownStick.registry.ItemRegistry;
 import Tamaized.TamModized.TamModBase;
 import Tamaized.TamModized.TamModized;
+import Tamaized.TamModized.proxy.AbstractProxy;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -28,13 +28,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class BeatDownStick extends TamModBase {
 
 	protected final static String version = "${version}";
-	public static final String modid = "BeatDownStick";
+	public static final String modid = "beatdownstick";
 
 	@Instance(modid)
 	public static BeatDownStick instance = new BeatDownStick();
 
 	@SidedProxy(clientSide = "Tamaized.BeatDownStick.proxy.ClientProxy", serverSide = "Tamaized.BeatDownStick.proxy.ServerProxy")
-	public static CommonProxy proxy;
+	public static AbstractProxy proxy;
 
 	public static Logger logger;
 
@@ -44,7 +44,7 @@ public class BeatDownStick extends TamModBase {
 	@Override
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		logger = LogManager.getLogger("Beat Down Stick");
+		logger = LogManager.getLogger("BeatDownStick");
 
 		register(items = new ItemRegistry());
 		register(damageSource = new DamageSourceRegistry());
@@ -79,8 +79,8 @@ public class BeatDownStick extends TamModBase {
 		if (pool == null) return;
 
 		if (e.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON) || e.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE) || e.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID) || e.getName().equals(LootTableList.CHESTS_STRONGHOLD_CORRIDOR) || e.getName().equals(LootTableList.CHESTS_STRONGHOLD_CROSSING) || e.getName().equals(LootTableList.CHESTS_STRONGHOLD_LIBRARY)) {
-			pool.addEntry(new LootEntryItem(items.beatDownStick, 1, 0, new LootFunction[0], new LootCondition[0], modid + ":beatDownStick"));
-			pool.addEntry(new LootEntryItem(items.cheesyBurger, 1, 0, new LootFunction[0], new LootCondition[0], modid + ":cheesyBurger"));
+			pool.addEntry(new LootEntryItem(items.beatDownStick, 1, 0, new LootFunction[0], new LootCondition[0], modid + ":beatdownstick"));
+			pool.addEntry(new LootEntryItem(items.cheesyBurger, 1, 0, new LootFunction[0], new LootCondition[0], modid + ":cheesyburger"));
 		}
 	}
 

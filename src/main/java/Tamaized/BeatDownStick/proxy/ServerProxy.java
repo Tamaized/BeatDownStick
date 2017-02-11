@@ -1,6 +1,8 @@
 package Tamaized.BeatDownStick.proxy;
 
-public class ServerProxy extends CommonProxy {
+import Tamaized.TamModized.proxy.AbstractProxy;
+
+public class ServerProxy extends AbstractProxy {
 
 	@Override
 	public void preInit() {
