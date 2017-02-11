@@ -80,7 +80,7 @@ public class BeatDownStick extends TamModBase {
 
 		if (e.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON) || e.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE) || e.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID) || e.getName().equals(LootTableList.CHESTS_STRONGHOLD_CORRIDOR) || e.getName().equals(LootTableList.CHESTS_STRONGHOLD_CROSSING) || e.getName().equals(LootTableList.CHESTS_STRONGHOLD_LIBRARY)) {
 			pool.addEntry(new LootEntryItem(items.beatDownStick, 1, 0, new LootFunction[0], new LootCondition[0], modid + ":beatdownstick"));
-			pool.addEntry(new LootEntryItem(items.cheesyBurger, 1, 0, new LootFunction[0], new LootCondition[0], modid + ":cheesyburger"));
+			// pool.addEntry(new LootEntryItem(items.cheesyBurger, 1, 0, new LootFunction[0], new LootCondition[0], modid + ":cheesyburger"));
 		}
 	}
 

@@ -15,8 +15,8 @@ public class ItemRegistry implements ITamRegistry {
 
 	public static ItemBeatDownStick beatDownStick;
 	public static ItemSuperBeatDownStick superBeatDownStick;
-	public static ItemBeatDownStick cheesyBurger;
-	public static ItemSuperBeatDownStick superCheesyBurger;
+	// public static ItemBeatDownStick cheesyBurger;
+	// public static ItemSuperBeatDownStick superCheesyBurger;
 
 	@Override
 	public void preInit() {
@@ -24,8 +24,8 @@ public class ItemRegistry implements ITamRegistry {
 
 		modelList.add(beatDownStick = new ItemBeatDownStick(CreativeTabs.COMBAT, "beatdownstick", 1));
 		modelList.add(superBeatDownStick = new ItemSuperBeatDownStick(CreativeTabs.COMBAT, "superbeatdownstick", 1));
-		modelList.add(cheesyBurger = new ItemBeatDownStick(CreativeTabs.COMBAT, "cheesyburger", 1));
-		modelList.add(superCheesyBurger = new ItemSuperBeatDownStick(CreativeTabs.COMBAT, "supercheesyburger", 1));
+		// modelList.add(cheesyBurger = new ItemBeatDownStick(CreativeTabs.COMBAT, "cheesyburger", 1));
+		// modelList.add(superCheesyBurger = new ItemSuperBeatDownStick(CreativeTabs.COMBAT, "supercheesyburger", 1));
 	}
 
 	@Override
