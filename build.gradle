@@ -31,7 +31,7 @@ minecraft {
     mappings = "${project.forgeMapping}"
     makeObfSourceJar = false
 	useDepAts = true
-	replaceIn 'Root.java'
+	replaceIn 'BeatDownStick.java'
 	replace '${version}', "${modVersion}${modVersionValue}"
 }
 
