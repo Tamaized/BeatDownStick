@@ -25,7 +25,7 @@ public class ItemBeatDownStick extends TamItem {
 		if (entity instanceof EntityLivingBase) {
 			EntityLivingBase e = (EntityLivingBase) entity;
 			float dmg = 0;
-			dmg = e instanceof EntityWither ? e.getMaxHealth() / 10 : e.getMaxHealth(); // THIS BROKE IN 1.8+ //(entity instanceof IBossDisplayData) ? (e.getMaxHealth() / 10) : (e.getMaxHealth()); // do 10% instead of 100% dmg to bosses
+			dmg = (!e.isNonBoss()) ? (e.getMaxHealth() / 10) : (e.getMaxHealth()); // do 10% instead of 100% dmg to bosses
 			e.attackEntityFrom(DamageSource.GENERIC, dmg);
 			flag = true;
 		} else if (entity instanceof EntityDragonPart) { // We can't tap into the Dragon's stats so we hardcode it. Also must be DamageSource.Player
