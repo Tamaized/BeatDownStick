@@ -42,34 +42,50 @@ public class BeatDownStick extends TamModBase {
 	public static DamageSourceRegistry damageSource;
 
 	@Override
+	protected AbstractProxy getProxy() {
+		return proxy;
+	}
+
+	@Override
+	public String getModID() {
+		return modid;
+	}
+
+	@Override
 	@EventHandler
+	public void FMLpreInit(FMLPreInitializationEvent event) {
+		super.FMLpreInit(event);
+	}
+
+	@Override
+	@EventHandler
+	public void FMLinit(FMLInitializationEvent event) {
+		super.FMLinit(event);
+	}
+
+	@Override
+	@EventHandler
+	public void FMLpostInit(FMLPostInitializationEvent event) {
+		super.FMLpostInit(event);
+	}
+
+	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		logger = LogManager.getLogger("BeatDownStick");
 
 		register(items = new ItemRegistry());
 		register(damageSource = new DamageSourceRegistry());
 
-		// Super here to start register stuff
-		super.preInit(event);
-
-		proxy.preInit();
 	}
 
 	@Override
-	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		super.init(event);
-
 		MinecraftForge.EVENT_BUS.register(this);
-
-		proxy.init();
 	}
 
 	@Override
-	@EventHandler
 	public void postInit(FMLPostInitializationEvent e) {
-		super.postInit(e);
-		proxy.postInit();
+		
 	}
 
 	@SubscribeEvent
