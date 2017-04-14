@@ -4,6 +4,10 @@ import Tamaized.TamModized.proxy.AbstractProxy;
 
 public class ClientProxy extends AbstractProxy {
 
+	public ClientProxy() {
+		super(Side.CLIENT);
+	}
+
 	@Override
 	public void preRegisters() {
 

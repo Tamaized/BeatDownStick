@@ -33,6 +33,7 @@ minecraft {
 	useDepAts = true
 	replaceIn 'BeatDownStick.java'
 	replace '${version}', "${modVersion}${modVersionValue}"
+	replace '${tamversion}', "${project.tammodizedVersion}"
 }
 
 dependencies {

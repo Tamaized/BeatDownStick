@@ -24,7 +24,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod(modid = BeatDownStick.modid, name = "Beat Down Stick", version = BeatDownStick.version, dependencies = "required-before:" + TamModized.modid + "@[" + TamModized.version + ",)")
+@Mod(modid = BeatDownStick.modid, name = "Beat Down Stick", version = BeatDownStick.version, dependencies = "required-before:${tamversion}@[${tamversion},)")
 public class BeatDownStick extends TamModBase {
 
 	protected final static String version = "${version}";
@@ -85,7 +85,7 @@ public class BeatDownStick extends TamModBase {
 
 	@Override
 	public void postInit(FMLPostInitializationEvent e) {
-		
+
 	}
 
 	@SubscribeEvent
