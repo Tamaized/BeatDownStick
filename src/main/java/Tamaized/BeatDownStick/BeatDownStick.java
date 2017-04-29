@@ -24,7 +24,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod(modid = BeatDownStick.modid, name = "Beat Down Stick", version = BeatDownStick.version, dependencies = "required-before:${tamversion}@[${tamversion},)")
+@Mod(modid = BeatDownStick.modid, name = "Beat Down Stick", version = BeatDownStick.version, dependencies = "required-before:" + TamModized.modid + "@[${tamversion},)")
 public class BeatDownStick extends TamModBase {
 
 	protected final static String version = "${version}";
