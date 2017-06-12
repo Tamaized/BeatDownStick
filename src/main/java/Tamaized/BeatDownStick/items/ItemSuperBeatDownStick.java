@@ -5,18 +5,16 @@ import Tamaized.TamModized.items.TamItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.entity.MultiPartEntityPart;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -33,10 +31,14 @@ public class ItemSuperBeatDownStick extends TamItem {
 			EntityLivingBase e = (EntityLivingBase) entity;
 			e.attackEntityFrom(BeatDownStick.damageSource.dmgOp, Float.MAX_VALUE);
 			return true;
-		} else if (entity instanceof EntityDragonPart) { // We can't tap into the Dragon's stats so we hardcode it. Also must be DamageSource.Player
-			EntityDragonPart e = (EntityDragonPart) entity;
-			e.attackEntityFrom(DamageSource.causePlayerDamage(player), Float.MAX_VALUE);
-			return true;
+		} else if (entity instanceof MultiPartEntityPart) {
+			MultiPartEntityPart e = (MultiPartEntityPart) entity;
+			if (e.entityDragonObj instanceof EntityDragon) // Must be DamageSource.Player for dragon
+				e.attackEntityFrom(DamageSource.causePlayerDamage(player), Float.MAX_VALUE);
+			else if (e.entityDragonObj != null && e.entityDragonObj instanceof EntityLivingBase) {
+				EntityLivingBase living = (EntityLivingBase) e.entityDragonObj;
+				living.attackEntityFrom(DamageSource.GENERIC, Float.MAX_VALUE);
+			}
 		}
 		return false;
 	}
