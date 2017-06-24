@@ -36,8 +36,8 @@ public class BeatDownStick extends TamModBase {
 
 	public static Logger logger;
 
-	public static ItemRegistry items;
-	public static DamageSourceRegistry damageSource;
+	public static ItemRegistry items = new ItemRegistry();
+	public static DamageSourceRegistry damageSource = new DamageSourceRegistry();
 
 	@Override
 	protected AbstractProxy getProxy() {
@@ -70,10 +70,6 @@ public class BeatDownStick extends TamModBase {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		logger = LogManager.getLogger("BeatDownStick");
-
-		register(items = new ItemRegistry());
-		register(damageSource = new DamageSourceRegistry());
-
 	}
 
 	@Override

@@ -30,10 +30,10 @@ public class ItemBeatDownStick extends TamItem {
 			flag = true;
 		} else if (entity instanceof MultiPartEntityPart) {
 			MultiPartEntityPart e = (MultiPartEntityPart) entity;
-			if (e.entityDragonObj instanceof EntityDragon) // Must be DamageSource.Player for dragon
+			if (e.parent instanceof EntityDragon) // Must be DamageSource.Player for dragon
 				e.attackEntityFrom(DamageSource.causePlayerDamage(player), 20);
-			else if (e.entityDragonObj != null && e.entityDragonObj instanceof EntityLivingBase) {
-				EntityLivingBase living = (EntityLivingBase) e.entityDragonObj;
+			else if (e.parent != null && e.parent instanceof EntityLivingBase) {
+				EntityLivingBase living = (EntityLivingBase) e.parent;
 				living.attackEntityFrom(DamageSource.GENERIC, (!e.isNonBoss()) ? (living.getMaxHealth() / 10) : (living.getMaxHealth()));
 			}
 			flag = true;

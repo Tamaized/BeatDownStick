@@ -33,10 +33,10 @@ public class ItemSuperBeatDownStick extends TamItem {
 			return true;
 		} else if (entity instanceof MultiPartEntityPart) {
 			MultiPartEntityPart e = (MultiPartEntityPart) entity;
-			if (e.entityDragonObj instanceof EntityDragon) // Must be DamageSource.Player for dragon
+			if (e.parent instanceof EntityDragon) // Must be DamageSource.Player for dragon
 				e.attackEntityFrom(DamageSource.causePlayerDamage(player), Float.MAX_VALUE);
-			else if (e.entityDragonObj != null && e.entityDragonObj instanceof EntityLivingBase) {
-				EntityLivingBase living = (EntityLivingBase) e.entityDragonObj;
+			else if (e.parent != null && e.parent instanceof EntityLivingBase) {
+				EntityLivingBase living = (EntityLivingBase) e.parent;
 				living.attackEntityFrom(DamageSource.GENERIC, Float.MAX_VALUE);
 			}
 		}
