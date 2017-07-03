@@ -2,9 +2,6 @@ package Tamaized.BeatDownStick;
 
 import Tamaized.BeatDownStick.registry.DamageSourceRegistry;
 import Tamaized.BeatDownStick.registry.ItemRegistry;
-import Tamaized.TamModized.TamModBase;
-import Tamaized.TamModized.TamModized;
-import Tamaized.TamModized.proxy.AbstractProxy;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -22,6 +19,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tamaized.tammodized.TamModBase;
+import tamaized.tammodized.TamModized;
+import tamaized.tammodized.proxy.AbstractProxy;
 
 @Mod(modid = BeatDownStick.modid, name = "Beat Down Stick", version = BeatDownStick.version, dependencies = "required-before:" + TamModized.modid + "@[${tamversion},)")
 public class BeatDownStick extends TamModBase {

@@ -1,6 +1,6 @@
 package Tamaized.BeatDownStick.items;
 
-import Tamaized.TamModized.items.TamItem;
+import tamaized.tammodized.common.items.TamItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

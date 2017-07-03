@@ -1,6 +1,7 @@
 package Tamaized.BeatDownStick.proxy;
 
-import Tamaized.TamModized.proxy.AbstractProxy;
+
+import tamaized.tammodized.proxy.AbstractProxy;
 
 public class ClientProxy extends AbstractProxy {
 

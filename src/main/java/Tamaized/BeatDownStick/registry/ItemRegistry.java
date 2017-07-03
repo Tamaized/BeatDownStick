@@ -2,13 +2,13 @@ package Tamaized.BeatDownStick.registry;
 
 import Tamaized.BeatDownStick.items.ItemBeatDownStick;
 import Tamaized.BeatDownStick.items.ItemSuperBeatDownStick;
-import Tamaized.TamModized.registry.ITamRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import tamaized.tammodized.registry.ITamRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
