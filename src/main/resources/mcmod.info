@@ -4,7 +4,7 @@
   "name": "Beat Down Stick",
   "description": "Adds a Stick called the Beat Down Stick to annihilate your foes, including Creative Mode Players",
   "version": "${version}",
-  "mcversion": "${mcversion}",
+  "mcversion": "[1.12,)",
   "url": "",
   "updateUrl": "",
   "authorList": ["Tamaized"],
