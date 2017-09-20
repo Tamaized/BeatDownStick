@@ -1,7 +1,5 @@
 package tamaized.beatdownstick.common.items;
 
-import tamaized.beatdownstick.BeatDownStick;
-import tamaized.tammodized.common.items.TamItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,13 +8,10 @@ import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import tamaized.beatdownstick.registry.DamageSourceRegistry;
+import tamaized.tammodized.common.items.TamItem;
 
 public class ItemSuperBeatDownStick extends TamItem {
 
@@ -29,7 +24,7 @@ public class ItemSuperBeatDownStick extends TamItem {
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
 		if (entity instanceof EntityLivingBase) {
 			EntityLivingBase e = (EntityLivingBase) entity;
-			e.attackEntityFrom(BeatDownStick.damageSource.dmgOp, Float.MAX_VALUE);
+			e.attackEntityFrom(DamageSourceRegistry.dmgOp, Float.MAX_VALUE);
 			return true;
 		} else if (entity instanceof MultiPartEntityPart) {
 			MultiPartEntityPart e = (MultiPartEntityPart) entity;
@@ -41,14 +36,6 @@ public class ItemSuperBeatDownStick extends TamItem {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		// worldIn.setBlockState(pos.up(), Blocks.CHEST.getDefaultState());
-		// TileEntityChest tile = (TileEntityChest) worldIn.getTileEntity(pos.up());
-		// tile.setLootTable(LootTableList.CHESTS_JUNGLE_TEMPLE, worldIn.rand.nextLong());
-		return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package tamaized.beatdownstick;
 
-import tamaized.beatdownstick.registry.DamageSourceRegistry;
-import tamaized.beatdownstick.registry.ItemRegistry;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -17,8 +15,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import tamaized.beatdownstick.registry.DamageSourceRegistry;
+import tamaized.beatdownstick.registry.ItemRegistry;
 import tamaized.tammodized.TamModBase;
 import tamaized.tammodized.TamModized;
 import tamaized.tammodized.proxy.AbstractProxy;
@@ -27,17 +25,17 @@ import tamaized.tammodized.proxy.AbstractProxy;
 public class BeatDownStick extends TamModBase {
 
 	public static final String modid = "beatdownstick";
-	protected final static String version = "${version}";
+	public static final String version = "${version}";
 	@Instance(modid)
 	public static BeatDownStick instance = new BeatDownStick();
 
 	@SidedProxy(clientSide = "tamaized.beatdownstick.proxy.ClientProxy", serverSide = "tamaized.beatdownstick.proxy.ServerProxy")
 	public static AbstractProxy proxy;
 
-	public static Logger logger;
-
-	public static ItemRegistry items = new ItemRegistry();
-	public static DamageSourceRegistry damageSource = new DamageSourceRegistry();
+	static {
+		new ItemRegistry();
+		new DamageSourceRegistry();
+	}
 
 	@Override
 	protected AbstractProxy getProxy() {
@@ -69,7 +67,7 @@ public class BeatDownStick extends TamModBase {
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
-		logger = LogManager.getLogger("BeatDownStick");
+
 	}
 
 	@Override

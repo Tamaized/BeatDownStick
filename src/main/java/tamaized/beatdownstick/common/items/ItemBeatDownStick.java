@@ -1,6 +1,5 @@
 package tamaized.beatdownstick.common.items;
 
-import tamaized.tammodized.common.items.TamItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,9 +8,9 @@ import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import tamaized.tammodized.common.items.TamItem;
 
 public class ItemBeatDownStick extends TamItem {
-
 
 	public ItemBeatDownStick(CreativeTabs tab, String n, int maxStackSize) {
 		super(tab, n, maxStackSize);
@@ -24,7 +23,7 @@ public class ItemBeatDownStick extends TamItem {
 		boolean flag = false;
 		if (entity instanceof EntityLivingBase) {
 			EntityLivingBase e = (EntityLivingBase) entity;
-			float dmg = 0;
+			float dmg;
 			dmg = (!e.isNonBoss()) ? (e.getMaxHealth() / 10) : (e.getMaxHealth()); // do 10% instead of 100% dmg to bosses
 			e.attackEntityFrom(DamageSource.GENERIC, dmg);
 			flag = true;
