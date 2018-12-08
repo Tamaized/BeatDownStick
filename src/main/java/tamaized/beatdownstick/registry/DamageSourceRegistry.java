@@ -6,6 +6,6 @@ import net.minecraft.util.DamageSource;
 
 public class DamageSourceRegistry {
 
-	public static final DamageSource dmgOp = new DamageSourceAnnihilate(BeatDownStick.modid + ".annihilate").setDamageBypassesArmor().setDamageAllowedInCreativeMode();
+	public static final DamageSource dmgOp = new DamageSourceAnnihilate(BeatDownStick.MODID + ".annihilate").setDamageBypassesArmor().setDamageAllowedInCreativeMode();
 
 }

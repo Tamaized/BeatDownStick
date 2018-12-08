@@ -1,23 +1,23 @@
 package tamaized.beatdownstick.common.items;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import tamaized.beatdownstick.registry.DamageSourceRegistry;
-import tamaized.tammodized.common.items.TamItem;
 
-public class ItemSuperBeatDownStick extends TamItem {
+public class ItemSuperBeatDownStick extends Item {
 
-	public ItemSuperBeatDownStick(CreativeTabs tab, String n, int maxStackSize) {
-		super(tab, n, maxStackSize);
+	public ItemSuperBeatDownStick() {
+		super();
 		setFull3D();
+		setMaxStackSize(1);
 	}
 
 	@Override
