@@ -9,10 +9,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import tamaized.beatdownstick.registry.DamageSourceRegistry;
 import tamaized.beatdownstick.registry.ItemRegistry;
@@ -41,7 +38,17 @@ public class BeatDownStick {
 		if (pool == null)
 			return;
 
-		if (e.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON) || e.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE) || e.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID) || e.getName().equals(LootTableList.CHESTS_STRONGHOLD_CORRIDOR) || e.getName().equals(LootTableList.CHESTS_STRONGHOLD_CROSSING) || e.getName().equals(LootTableList.CHESTS_STRONGHOLD_LIBRARY)) {
+		if (e.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON) ||
+
+				e.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE) ||
+
+				e.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID) ||
+
+				e.getName().equals(LootTableList.CHESTS_STRONGHOLD_CORRIDOR) ||
+
+				e.getName().equals(LootTableList.CHESTS_STRONGHOLD_CROSSING) ||
+
+				e.getName().equals(LootTableList.CHESTS_STRONGHOLD_LIBRARY)) {
 			pool.addEntry(new LootEntryItem(ItemRegistry.beatDownStick, 1, 0, new LootFunction[0], new LootCondition[0], MODID + ":beatdownstick"));
 			// pool.addEntry(new LootEntryItem(items.cheesyBurger, 1, 0, new LootFunction[0], new LootCondition[0], MODID + ":cheesyburger"));
 		}
