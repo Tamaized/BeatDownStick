@@ -35,7 +35,6 @@ minecraft {
 	useDepAts = true
 	replaceIn 'BeatDownStick.java'
 	replace '${version}', "${modVersion}${modVersionValue}"
-	replace '${tamversion}', "${project.tammodizedVersion}"
 }
 
 dependencies {
@@ -52,8 +51,7 @@ processResources {
 		expand([
 			'version'		: project.modVersion+""+project.modVersionValue,
 			'mcversion'		: project.minecraftVersion,
-			'fVersion'		: project.forgeVersion,
-			'tamVersion'	: project.tammodizedVersion
+			'fVersion'		: project.forgeVersion
         ])
     }
         
