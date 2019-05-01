@@ -1,0 +1,12 @@
+modLoader="javafml"
+loaderVersion="[25,)"
+issueTrackerURL="https://github.com/Tamaized/BeatDownStick/issues"
+[[mods]]
+modId="beatdownstick"
+version="${version}"
+displayName="Beat Down Stick"
+credits=""
+authors="Tamaized"
+description='''
+Adds a Stick called the Beat Down Stick to annihilate your foes, including Creative Mode Players
+'''
