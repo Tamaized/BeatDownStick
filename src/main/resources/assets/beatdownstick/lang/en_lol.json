@@ -1,0 +1,8 @@
+{
+  "_comment": "# Items",
+  "item.beatdownstick.beatdownstick": "Big Oof Stwick",
+  "item.beatdownstick.superbeatdownstick": "§5Suwuper Big Oof Stwick",
+
+  "_comment": "# Damage Source",
+  "death.attack.beatdownstick.annihilate": "%s was anniwiwated"
+}
