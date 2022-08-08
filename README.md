@@ -22,6 +22,6 @@ repositories {
 }
 
 dependencies {
-    runtimeOnly fg.deobf("tamaized:beatdownstick:{version}")
+    implementation fg.deobf("tamaized:beatdownstick:{version}")
 }
 ```
