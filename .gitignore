@@ -1,6 +1,10 @@
 *
+!.gitignore
+!donator.properties
 !gradlew
 !gradlew.bat
+!/contributors/
+!/contributors/**
 !/gradle
 !/gradle/**
 !/src/
@@ -8,7 +12,8 @@
 !/libs/
 !/libs/**
 !build.gradle
-!changes.txt
 !gradle.properties
+!discord.properties
+!maven.properties
 !LICENSE
 !README.md
