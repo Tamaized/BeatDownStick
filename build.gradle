@@ -12,54 +12,48 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = "1.19-${modVersion}${modVersionValue}"
+version = "${artifactor_minecraft_version}-${artifactor_mod_version}." + (hasProperty("CIVersion") ? CIVersion : mod_version)
 group = "tamaized.beatdownstick"
 archivesBaseName = "BeatDownStick"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-import net.minecraftforge.gradle.common.util.RunConfig
-
-class DefaultRunConfig extends RunConfig {
-
-    DefaultRunConfig(Project project, SourceSet sourceSet, String n) {
-        super(project, n)
-        this.taskName "Minecraft_" + name.substring(0, 1).toUpperCase(Locale.US).concat(name.substring(1)) + "_1.19"
-        this.properties 'forge.logging.console.level': 'debug'
-        this.properties 'mixin.env.disableRefMap': 'true'
-        this.workingDirectory project.file('run').canonicalPath
-        this.source sourceSet
-        this.environment 'TMP': './tmp/'
-        this.ideaModule project.getName().concat(".main")
-        this.singleInstance true
-    }
-
-    DefaultRunConfig setArgs(String... args) {
-        setArgs(new ArrayList() {
-            {
-                for (String arg : args)
-                    add(arg)
-            }
-        })
-        return this
-    }
-}
-
 minecraft {
-    mappings("${project.mappingType}", "${project.mappingVersion}")
+    mappings("${project.mapping_type}", "${project.mapping_version}")
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-    var proj = project
-    var main = sourceSets.main
+
     runs {
-        add(new DefaultRunConfig(proj, main, "client").setArgs(
+        client {
+            workingDirectory project.file('run')
 
-                '--username', 'Tamaized',
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
 
-                '--uuid', '16fea09e-314e-4955-88c2-6b552ecf314a'
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
 
-        ))
+            mods {
+                beatdownstick {
+                    source sourceSets.main
+                }
+            }
+        }
 
-        add(new DefaultRunConfig(proj, main, "server"))
+        server {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                beatdownstick {
+                    source sourceSets.main
+                }
+            }
+        }
     }
 }
 
@@ -70,9 +64,9 @@ repositories {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${project.minecraftVersion}-${project.forgeVersion}"
+    minecraft "net.minecraftforge:forge:${project.artifactor_minecraft_version}-${project.artifactor_forge_version}"
 
-    implementation fg.deobf("mezz.jei:${project.jeiVersion}")
+    implementation fg.deobf("mezz.jei:${project.jei_version}")
 }
 
 processResources {
@@ -87,10 +81,67 @@ jar {
     manifest {
         attributes(["Specification-Title"     : "BeatDownStick",
                     "Specification-Vendor"    : "Tamaized",
-                    "Specification-Version"   : "${modVersion}${modVersionValue}",
+                    "Specification-Version"   : "${version}",
                     "Implementation-Title"    : project.name,
                     "Implementation-Version"  : "${version}",
                     "Implementation-Vendor"   : "Tamaized",
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
     }
 }
+
+def secrets = new Properties()
+def secretsFile = file('secrets.properties')
+if (secretsFile.exists()) {
+    secretsFile.withInputStream {
+        stream -> secrets.load(stream)
+    }
+
+    fileTree("secrets").matching {
+        include "**/*.properties"
+    }.each {
+        File file ->
+            file.withInputStream {
+                stream -> secrets.load(stream)
+            }
+    }
+}
+
+jar.finalizedBy('reobfJar')
+
+def mavenUser = hasProperty("CIMUser") ? CIMUser : secrets.getProperty("maven_username")
+def mavenToken = hasProperty("CIMToken") ? CIMToken : secrets.getProperty("maven_password")
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            afterEvaluate {
+                artifact project.jar
+                artifact project.sourceJar
+            }
+            setGroupId 'tamaized'
+            setArtifactId 'voidscape'
+        }
+    }
+    repositories {
+        maven {
+            url "https://maven.tamaized.com/releases"
+            credentials {
+                username mavenUser
+                password mavenToken
+            }
+        }
+    }
+}
+
+task sourceJar(type: Jar, dependsOn: 'classes') {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task incrBuildNum doLast {
+    ant.propertyfile(file: "gradle.properties") {
+        entry(key: "mod_version", value: Integer.parseInt(project.mod_version) + 1)
+    }
+}
+
+build.finalizedBy(incrBuildNum)
