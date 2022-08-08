@@ -1,6 +1,7 @@
 modLoader="javafml"
-loaderVersion="[25,)"
+loaderVersion="[41,)"
 issueTrackerURL="https://github.com/Tamaized/BeatDownStick/issues"
+license="MIT License"
 [[mods]]
 modId="beatdownstick"
 version="${version}"

@@ -2,8 +2,6 @@
   "_comment": "# Items",
   "item.beatdownstick.beatdownstick": "Beat Down Stick",
   "item.beatdownstick.superbeatdownstick": "§5Super Beat Down Stick",
-  "item.beatdownstick.cheesyburger": "Cheesy Burger",
-  "item.beatdownstick.supercheesyburger": "§5Super Cheesy Burger",
 
   "_comment": "# Damage Source",
   "death.attack.beatdownstick.annihilate": "%s was annihilated"

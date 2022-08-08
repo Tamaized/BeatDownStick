@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "entries": [
+    "beatdownstick:desert_pyramid",
+    "beatdownstick:dungeon",
+    "beatdownstick:jungle_temple",
+    "beatdownstick:stronghold_corridor",
+    "beatdownstick:stronghold_crossing",
+    "beatdownstick:stronghold_library"
+  ]
+}
