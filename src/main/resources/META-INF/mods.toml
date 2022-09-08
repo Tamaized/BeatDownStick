@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[41,)"
+loaderVersion="[43,)"
 issueTrackerURL="https://github.com/Tamaized/BeatDownStick/issues"
 license="MIT License"
 [[mods]]
@@ -11,3 +11,17 @@ authors="Tamaized"
 description='''
 Adds a Stick called the Beat Down Stick to annihilate your foes, including Creative Mode Players
 '''
+
+[[dependencies.beatdownstick]]
+    modId="forge"
+    mandatory=true
+    versionRange="[43.1.23,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.beatdownstick]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19.2,)"
+    ordering="NONE"
+    side="BOTH"
