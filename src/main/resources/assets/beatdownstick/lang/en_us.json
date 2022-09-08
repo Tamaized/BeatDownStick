@@ -4,5 +4,8 @@
   "item.beatdownstick.superbeatdownstick": "§5Super Beat Down Stick",
 
   "_comment": "# Damage Source",
-  "death.attack.beatdownstick.annihilate": "%s was annihilated"
+  "death.attack.beatdownstick.annihilate": "%s was annihilated",
+
+  "_comment": "# Subtitle",
+  "subtitles.beatdownstick.item.wham": "Player beats down entity"
 }

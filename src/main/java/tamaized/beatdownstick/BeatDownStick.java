@@ -31,15 +31,19 @@ public class BeatDownStick {
 
 	public static final DeferredRegister<Item> ITEM_REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 	public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIER_REGISTRY = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, MODID);
+	public static final DeferredRegister<SoundEvent> SOUND_REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
 
 	public static final RegistryObject<Item> BEAT_DOWN_STICK = ITEM_REGISTRY.register("beatdownstick", () -> new ItemBeatDownStick(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).stacksTo(1).durability(21)));
 	public static final RegistryObject<Item> SUPER_BEAT_DOWN_STICK = ITEM_REGISTRY.register("superbeatdownstick", () -> new ItemSuperBeatDownStick(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).stacksTo(1)));
 
 	public static final RegistryObject<Codec<BeatDownStickModifier>> BEAT_DOWN_STICK_LOOT_INJECTION = LOOT_MODIFIER_REGISTRY.register("loot_injection", () -> BeatDownStickModifier.CODEC);
 
+	public static final RegistryObject<SoundEvent> WHAM = SOUND_REGISTRY.register("item.beatdownstick.wham", () -> new SoundEvent(new ResourceLocation(MODID, "item.beatdownstick.wham")));
+
 	public BeatDownStick() {
 		ITEM_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
 		LOOT_MODIFIER_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
+		SOUND_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
 	}
 
 }
