@@ -1,8 +1,12 @@
 package tamaized.beatdownstick;
 
-
 import com.mojang.serialization.Codec;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
@@ -22,6 +26,8 @@ public class BeatDownStick {
 	public static final String MODID = "beatdownstick";
 
 	public static final DamageSource DAMAGE_SOURCE_ANNIHILATE = new DamageSource(BeatDownStick.MODID + ".annihilate").bypassArmor().bypassInvul();
+
+	public static final TagKey<EntityType<?>> DONT_ONE_SHOT = TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(MODID, "stick_doesnt_one_shot"));
 
 	public static final DeferredRegister<Item> ITEM_REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 	public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIER_REGISTRY = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, MODID);
