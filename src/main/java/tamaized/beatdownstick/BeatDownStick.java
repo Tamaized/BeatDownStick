@@ -16,7 +16,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import tamaized.beatdownstick.common.items.ItemBeatDownStick;
-import tamaized.beatdownstick.common.items.ItemSuperBeatDownStick;
 import tamaized.beatdownstick.common.loot.BeatDownStickModifier;
 
 @Mod(BeatDownStick.MODID)
@@ -33,8 +32,8 @@ public class BeatDownStick {
 	public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIER_REGISTRY = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, MODID);
 	public static final DeferredRegister<SoundEvent> SOUND_REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
 
-	public static final RegistryObject<Item> BEAT_DOWN_STICK = ITEM_REGISTRY.register("beatdownstick", () -> new ItemBeatDownStick(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).stacksTo(1).durability(21)));
-	public static final RegistryObject<Item> SUPER_BEAT_DOWN_STICK = ITEM_REGISTRY.register("superbeatdownstick", () -> new ItemSuperBeatDownStick(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).stacksTo(1)));
+	public static final RegistryObject<Item> BEAT_DOWN_STICK = ITEM_REGISTRY.register("beatdownstick", () -> new ItemBeatDownStick(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).stacksTo(1).durability(21), false));
+	public static final RegistryObject<Item> SUPER_BEAT_DOWN_STICK = ITEM_REGISTRY.register("superbeatdownstick", () -> new ItemBeatDownStick(new Item.Properties().tab(CreativeModeTab.TAB_COMBAT).stacksTo(1), true));
 
 	public static final RegistryObject<Codec<BeatDownStickModifier>> BEAT_DOWN_STICK_LOOT_INJECTION = LOOT_MODIFIER_REGISTRY.register("loot_injection", () -> BeatDownStickModifier.CODEC);
 
