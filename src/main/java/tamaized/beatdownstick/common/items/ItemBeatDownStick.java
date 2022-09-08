@@ -54,4 +54,24 @@ public class ItemBeatDownStick extends Item {
 		}
 		return false;
 	}
+
+	@Override
+	public boolean isEnchantable(ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return false;
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return false;
+	}
+
+	@Override
+	public float getXpRepairRatio(ItemStack stack) {
+		return 0.0F;
+	}
 }
