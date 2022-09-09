@@ -4,5 +4,8 @@
   "item.beatdownstick.superbeatdownstick": "§5Suwuper Big Oof Stwick",
 
   "_comment": "# Damage Source",
-  "death.attack.beatdownstick.annihilate": "%s was anniwiwated"
+  "death.attack.beatdownstick.annihilate": "%s was anniwiwated",
+
+  "_comment": "# Subtitle",
+  "subtitles.beatdownstick.item.wham": "Pwayer smacks cweatur"
 }
