@@ -30,17 +30,17 @@ public class ItemBeatDownStick extends Item {
 		DamageSource source = this.superStick ? BeatDownStick.DAMAGE_SOURCE_ANNIHILATE : DamageSource.GENERIC;
 		if (entity instanceof LivingEntity living) {
 			dmg = this.superStick ? Float.MAX_VALUE : dontOneShot ? (living.getMaxHealth() / 10) : (living.getMaxHealth()); // do 10% instead of 100% dmg to bosses
-			player.playSound(BeatDownStick.WHAM.get(), 1.0F, 1.0F);
+			player.playSound(BeatDownStick.WHAM.get(), 0.25F, 0.5F + player.getRandom().nextFloat());
 			if (living.hurt(source, dmg))
 				flag = true;
 		} else if (entity instanceof PartEntity<?> part) {
 			if (part.getParent() instanceof EnderDragon dragon) { // Must be DamageSource.Player for dragon
-				player.playSound(BeatDownStick.WHAM.get(), 1.0F, 1.0F);
+				player.playSound(BeatDownStick.WHAM.get(), 0.25F, 0.5F + player.getRandom().nextFloat());
 				if (part.hurt(DamageSource.playerAttack(player), this.superStick ? Float.MAX_VALUE : (dragon.getMaxHealth() / 10)))
 					flag = true;
 			} else if (part.getParent() instanceof LivingEntity living) {
 				dmg = this.superStick ? Float.MAX_VALUE : dontOneShot ? (living.getMaxHealth() / 10) : (living.getMaxHealth());
-				player.playSound(BeatDownStick.WHAM.get(), 1.0F, 1.0F);
+				player.playSound(BeatDownStick.WHAM.get(), 0.25F, 0.5F + player.getRandom().nextFloat());
 				if (living.hurt(source, dmg))
 					flag = true;
 			}
@@ -54,6 +54,11 @@ public class ItemBeatDownStick extends Item {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		return superStick || super.isFoil(stack);
 	}
 
 	@Override

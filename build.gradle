@@ -58,14 +58,14 @@ minecraft {
 
 repositories {
     maven {
-        url = "https://dvs1.progwml6.com/files/maven/" // JEI
+        url = "https://maven.blamejared.com/mezz/jei/" // JEI
     }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${project.artifactor_minecraft_version}-${project.artifactor_forge_version}"
 
-    implementation fg.deobf("mezz.jei:${project.jei_version}")
+//    implementation fg.deobf("mezz.jei:${project.jei_version}")
 }
 
 processResources {
