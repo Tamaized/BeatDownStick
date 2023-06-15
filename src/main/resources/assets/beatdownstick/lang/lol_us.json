@@ -1,11 +1,6 @@
 {
-  "_comment": "# Items",
   "item.beatdownstick.beatdownstick": "Big Oof Stwick",
-  "item.beatdownstick.superbeatdownstick": "§5Suwuper Big Oof Stwick",
-
-  "_comment": "# Damage Source",
+  "item.beatdownstick.superbeatdownstick": "§5Suwuper Big Oof Stwick§r",
   "death.attack.beatdownstick.annihilate": "%s was anniwiwated",
-
-  "_comment": "# Subtitle",
-  "subtitles.beatdownstick.item.wham": "Pwayer smacks cweatur"
+  "subtitles.beatdownstick.item.wham": "Stwick go smakz"
 }

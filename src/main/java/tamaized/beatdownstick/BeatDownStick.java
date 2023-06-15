@@ -2,15 +2,16 @@ package tamaized.beatdownstick;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -27,7 +28,7 @@ public class BeatDownStick {
 
 	public static final String MODID = "beatdownstick";
 
-	public static final DamageSource DAMAGE_SOURCE_ANNIHILATE = new DamageSource(BeatDownStick.MODID + ".annihilate").bypassArmor().bypassInvul();
+	public static final ResourceKey<DamageType> ANNIHILATE = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(MODID, "annihilate"));
 
 	public static final TagKey<EntityType<?>> DONT_ONE_SHOT = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(MODID, "stick_doesnt_one_shot"));
 
@@ -46,8 +47,8 @@ public class BeatDownStick {
 		ITEM_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
 		LOOT_MODIFIER_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
 		SOUND_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
-		FMLJavaModLoadingContext.get().getModEventBus().addListener((Consumer<CreativeModeTabEvent.BuildContents>) event -> {
-			if (event.getTab() == CreativeModeTabs.COMBAT) {
+		FMLJavaModLoadingContext.get().getModEventBus().addListener((Consumer<BuildCreativeModeTabContentsEvent>) event -> {
+			if (event.getTabKey() == CreativeModeTabs.COMBAT) {
 				event.accept(BEAT_DOWN_STICK::get);
 				event.accept(SUPER_BEAT_DOWN_STICK::get);
 			}

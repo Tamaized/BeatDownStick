@@ -1,11 +1,6 @@
 {
-  "_comment": "# Items",
   "item.beatdownstick.beatdownstick": "Beat Down Stick",
-  "item.beatdownstick.superbeatdownstick": "§5Super Beat Down Stick",
-
-  "_comment": "# Damage Source",
+  "item.beatdownstick.superbeatdownstick": "§5Super Beat Down Stick§r",
   "death.attack.beatdownstick.annihilate": "%s was annihilated",
-
-  "_comment": "# Subtitle",
-  "subtitles.beatdownstick.item.wham": "Player beats down entity"
+  "subtitles.beatdownstick.item.wham": "Stick smacks"
 }
