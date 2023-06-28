@@ -13,7 +13,5 @@
 !/libs/**
 !build.gradle
 !gradle.properties
-!discord.properties
-!maven.properties
 !LICENSE
 !README.md
