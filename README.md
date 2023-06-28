@@ -11,7 +11,7 @@ There is a creative mode only version that deals the max damage possible (Float.
 https://curseforge.com/minecraft/mc-mods/beat-down-stick
 
 ## Latest Development Download
-https://tamaized.com/artifacts/builds/Tamaized/BeatDownStick/latest/
+https://artifactor.tamaized.com/repository/Tamaized/BeatDownStick/artifact/latest
 
 ## Maven
 ```
