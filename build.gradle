@@ -1,146 +1,225 @@
-buildscript {
-    repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-    }
-}
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
+import org.jetbrains.gradle.ext.JUnit
 
-version = "${minecraft_version}-${mod_major_version}." + (hasProperty("CIVersion") ? CIVersion : mod_version)
-group = "tamaized.beatdownstick"
-archivesBaseName = "BeatDownStick"
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-minecraft {
-    mappings("${project.mapping_type}", "${project.mapping_version}")
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    runs {
-        client {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                beatdownstick {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                beatdownstick {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
+plugins {
+	id 'java-library'
+	id 'eclipse'
+	id 'idea'
+	id 'maven-publish'
+	// Version List: https://projects.neoforged.net/neoforged/ModDevGradle
+	id 'net.neoforged.moddev' version "${mdg_version}"
+	id "com.dorongold.task-tree" version "4.0.0"
+	id 'com.gradleup.shadow' version '8.3.3'
 }
 
-repositories {
-    maven {
-        url = "https://maven.blamejared.com/mezz/jei/" // JEI
-    }
+configurations {
+	shade
 }
 
-dependencies {
-    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
-
-//    implementation fg.deobf("mezz.jei:${project.jei_version}")
-}
-
-processResources {
-    filesMatching("META-INF/mods.toml") {
-        expand([
-                'version': "${project.version}"
-        ])
-    }
-}
-
-jar {
-    manifest {
-        attributes(["Specification-Title"     : "BeatDownStick",
-                    "Specification-Vendor"    : "Tamaized",
-                    "Specification-Version"   : "${version}",
-                    "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : "${version}",
-                    "Implementation-Vendor"   : "Tamaized",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
-    }
+shadowJar {
+	archiveClassifier.set('')
+	configurations = [project.configurations.shade]
+	relocate 'tamaized.beanification', "tamaized.${project.mod_id}.beanification"
+	relocate 'tamaized.regutil', "tamaized.${project.mod_id}.regutil"
 }
 
 def secrets = new Properties()
 def secretsFile = file('secrets.properties')
 if (secretsFile.exists()) {
-    secretsFile.withInputStream {
-        stream -> secrets.load(stream)
-    }
+	secretsFile.withInputStream {
+		stream -> secrets.load(stream)
+	}
 
-    fileTree("secrets").matching {
-        include "**/*.properties"
-    }.each {
-        File file ->
-            file.withInputStream {
-                stream -> secrets.load(stream)
-            }
-    }
+	fileTree("secrets").matching {
+		include "**/*.properties"
+	}.each {
+		File file ->
+			file.withInputStream {
+				stream -> secrets.load(stream)
+			}
+	}
 }
 
-jar.finalizedBy('reobfJar')
+idea {
+	module {
+		downloadJavadoc = true
+		downloadSources = true
+	}
+}
+
+version = "${project.minecraft_version}-${project.mod_major_version}." + (hasProperty("CIVersion") ? CIVersion : mod_version)
+group = "tamaized.${project.mod_id}"
+
+base {
+	archivesName = "BeatDownStick"
+}
+
+java {
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(21))
+	}
+}
+
+compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+
+neoForge {
+	version = project.neoforge_version
+
+	validateAccessTransformers = true
+
+	mods {
+		"${project.mod_id}" {
+			sourceSet this.sourceSets.main
+		}
+	}
+
+	unitTest {
+		enable()
+		testedMod = mods."${project.mod_id}"
+		project.afterEvaluate {
+			idea {
+				project {
+					settings {
+						runConfigurations {
+							defaults(JUnit) {
+								vmParameters += " -Dforge.logging.console.level=debug"
+								vmParameters += " -Dforge.logging.marker.scan=ACCEPT"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	runs {
+		configureEach {
+			gameDirectory = project.file('run')
+			systemProperty 'forge.logging.console.level', 'debug'
+			logLevel = org.slf4j.event.Level.DEBUG
+		}
+
+		client {
+			client()
+			systemProperty 'forge.enabledGameTestNamespaces', mod_id
+			programArguments.addAll '--username', secrets.getProperty("username") ?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid") ?: ''
+		}
+
+		server {
+			server()
+			systemProperty 'forge.enabledGameTestNamespaces', mod_id
+			programArgument '--nogui'
+		}
+
+		data {
+			data()
+			gameDirectory = project.file('run-data')
+			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+		}
+	}
+}
+
+repositories {
+	maven {
+		name 'Tama\'s Maven' // Beanification, RegUtil
+		url 'https://maven.tamaized.com/releases/'
+	}
+	maven {
+		name 'Jared\'s Maven' // JEI
+		url 'https://maven.blamejared.com/'
+	}
+}
+
+dependencies {
+	runtimeOnly "mezz.jei:jei-${project.base_minecraft_version}-neoforge:${project.jei_version}"
+
+	def beanification = "tamaized:beanification:${project.minecraft_version}-${project.beanification_version}"
+	implementation beanification
+	shade beanification
+	testImplementation "${beanification}:tests"
+	compileOnly "${beanification}:test-sources"
+
+	def reg = "tamaized:regutil:${project.minecraft_version}-${project.regutil_version}"
+	implementation reg
+	shade reg
+
+	testImplementation group: 'net.neoforged', name: 'testframework', version: project.neoforge_version
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.10.3'
+	testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.3'
+	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.12.0'
+}
+
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "failed"
+
+		showExceptions true
+		exceptionFormat "full"
+		showCauses true
+		showStackTraces true
+
+		showStandardStreams = false
+	}
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+processResources {
+	def version = project.version
+	filesMatching("META-INF/neoforge.mods.toml") {
+		expand([
+			'file': ['jarVersion': "${version}"]
+		])
+	}
+}
+
+jar {
+	manifest {
+		attributes([
+			"Specification-Title"     : "Beat Down Stick",
+			"Specification-Vendor"    : "Tamaized",
+			"Specification-Version"   : "${version}",
+			"Implementation-Title"    : project.name,
+			"Implementation-Version"  : "${version}",
+			"Implementation-Vendor"   : "Tamaized",
+			"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+		])
+	}
+}
 
 def mavenUser = hasProperty("CIMUser") ? CIMUser : secrets.getProperty("maven_username")
 def mavenToken = hasProperty("CIMToken") ? CIMToken : secrets.getProperty("maven_password")
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            afterEvaluate {
-                artifact project.jar
-                artifact project.sourceJar
-            }
-            setGroupId 'tamaized'
-            setArtifactId 'beatdownstick'
-        }
-    }
-    repositories {
-        maven {
-            url "https://maven.tamaized.com/releases"
-            credentials {
-                username mavenUser
-                password mavenToken
-            }
-        }
-    }
+	publications {
+		create('mavenJava', MavenPublication) {
+			afterEvaluate {
+				artifact this.project.jar
+				artifact this.project.sourceJar
+			}
+			groupId 'tamaized'
+			artifactId this.project.mod_id
+		}
+	}
+	repositories {
+		maven {
+			url "https://maven.tamaized.com/releases"
+			credentials {
+				username mavenUser
+				password mavenToken
+			}
+		}
+	}
 }
 
-task sourceJar(type: Jar, dependsOn: 'classes') {
-    from sourceSets.main.allSource
-    classifier = 'sources'
+tasks.register('sourceJar', Jar) {
+	dependsOn 'classes'
+	from sourceSets.main.allSource
+	archiveClassifier = 'sources'
 }
 
-task incrBuildNum doLast {
-    ant.propertyfile(file: "gradle.properties") {
-        entry(key: "mod_version", value: Integer.parseInt(project.mod_version) + 1)
-    }
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
 }
 
-build.finalizedBy(incrBuildNum)
+build.dependsOn shadowJar

@@ -1,4 +1,6 @@
 *
+!.editorconfig
+!.gitattributes
 !.gitignore
 !donator.properties
 !gradlew
@@ -11,7 +13,12 @@
 !/src/**
 !/libs/
 !/libs/**
+!/bbmodels/
+!/bbmodels/**
 !build.gradle
+!settings.gradle
 !gradle.properties
+!discord.properties
+!maven.properties
 !LICENSE
 !README.md
