@@ -38,7 +38,7 @@ public class BeatDownStickModifier extends LootModifier {
 		Vec3 origin = context.getParamOrNull(LootContextParams.ORIGIN);
 		if (origin == null) return generatedLoot;
 		if (context.getRandom().nextFloat() < this.chance) {
-			generatedLoot.add(items.BEAT_DOWN_STICK.get().getDefaultInstance());
+			generatedLoot.add(items.BEAT_DOWN_STICK.value().getDefaultInstance());
 		}
 		return generatedLoot;
 	}

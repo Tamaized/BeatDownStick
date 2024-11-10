@@ -19,8 +19,8 @@ public class ModCreativeTabs {
 	private void setup(IEventBus modBus) {
 		modBus.addListener((Consumer<BuildCreativeModeTabContentsEvent>) event -> {
 			if (event.getTabKey() == CreativeModeTabs.COMBAT) {
-				event.accept(items.BEAT_DOWN_STICK::get);
-				event.accept(items.SUPER_BEAT_DOWN_STICK::get);
+				event.accept(items.BEAT_DOWN_STICK::value);
+				event.accept(items.SUPER_BEAT_DOWN_STICK::value);
 			}
 		});
 	}

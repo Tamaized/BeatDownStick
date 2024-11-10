@@ -20,6 +20,9 @@ public class DataGenerators {
 	private LootGenerator loot;
 
 	@Autowired
+	private BakedModelGenerator bakedModels;
+
+	@Autowired
 	private LangGenerator lang;
 
 	@Autowired
@@ -33,6 +36,7 @@ public class DataGenerators {
 			tags.generate(event);
 			loot.generate(event);
 
+			bakedModels.generate(event);
 			lang.generate(event);
 
 			metadata.generate(event);
