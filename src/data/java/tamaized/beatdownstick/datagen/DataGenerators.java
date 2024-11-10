@@ -5,36 +5,33 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
-import tamaized.beatdownstick.datagen.loot.LootModifierProviderFactory;
-import tamaized.beatdownstick.datagen.tag.DamageTypeTagProviderFactory;
-import tamaized.beatdownstick.datagen.tag.ModEntityTypeTagsProviderFactory;
+import tamaized.beatdownstick.datagen.generator.LootGenerator;
+import tamaized.beatdownstick.datagen.generator.MetadataGenerator;
+import tamaized.beatdownstick.datagen.generator.RegistryGenerator;
+import tamaized.beatdownstick.datagen.generator.TagGenerator;
 
 @Component
 public class DataGenerators {
 
 	@Autowired
-	private RegistryProvider registryProvider;
+	private RegistryGenerator registry;
 
 	@Autowired
-	private DamageTypeTagProviderFactory damageTypeTagProviderFactory;
+	private TagGenerator tags;
 
 	@Autowired
-	private ModEntityTypeTagsProviderFactory entityTypeTagsProviderFactory;
+	private LootGenerator loot;
 
 	@Autowired
-	private LootModifierProviderFactory lootModifierProviderFactory;
+	private MetadataGenerator metadata;
 
 	@PostConstruct
 	private void register(IEventBus bus) {
 		bus.addListener(GatherDataEvent.class, event -> {
-			registryProvider.retrieve(event); // Ensure this is loaded first
-
-			// Tags
-			event.getGenerator().addProvider(event.includeServer(), damageTypeTagProviderFactory.make(event));
-			event.getGenerator().addProvider(event.includeServer(), entityTypeTagsProviderFactory.make(event));
-
-			// GLM
-			event.getGenerator().addProvider(event.includeServer(), lootModifierProviderFactory.make(event));
+			registry.generate(event);
+			tags.generate(event);
+			loot.generate(event);
+			metadata.generate(event);
 		});
 	}
 
