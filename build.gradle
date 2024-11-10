@@ -72,6 +72,13 @@ sourceSets {
 			srcDirs = ['src/main/resources']
 		}
 	}
+	dataForPublishing {
+		compileClasspath += data.compileClasspath
+
+		java {
+			srcDirs = ['src/data/java']
+		}
+	}
 }
 
 configurations {
@@ -141,7 +148,6 @@ neoForge {
 		data {
 			data()
 			gameDirectory = project.file('run-data')
-			systemProperty 'forge.logging.marker.scan', 'ACCEPT'
 			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
 			sourceSet = this.sourceSets.data
 			mods = [dataMod]
@@ -255,13 +261,13 @@ tasks.register('sourceJar', Jar) {
 
 tasks.register('dataJar', Jar) {
 	dependsOn 'classes'
-	from sourceSets.data.output
+	from sourceSets.dataForPublishing.output
 	archiveClassifier = 'data'
 }
 
 tasks.register('dataSourceJar', Jar) {
 	dependsOn 'classes'
-	from sourceSets.data.allSource
+	from sourceSets.dataForPublishing.allSource
 	archiveClassifier = 'data-sources'
 }
 
