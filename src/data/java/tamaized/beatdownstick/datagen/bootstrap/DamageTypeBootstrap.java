@@ -7,20 +7,20 @@ import net.minecraft.world.damagesource.DamageType;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
 import tamaized.beatdownstick.registry.ModDamageTypes;
-import tamaized.beatdownstick.util.DotFormat;
+import tamaized.beatdownstick.util.NamespaceUtils;
 
 @Component
 public class DamageTypeBootstrap {
 
 	@Autowired
-	private DotFormat dotFormat;
+	private NamespaceUtils namespaceUtils;
 
 	@Autowired
 	private ModDamageTypes damageTypes;
 
 	public RegistrySetBuilder bootstrap(RegistrySetBuilder builder) {
 		return builder.add(Registries.DAMAGE_TYPE, context -> {
-			context.register(damageTypes.ANNIHILATE, new DamageType(dotFormat.format(damageTypes.ANNIHILATE), DamageScaling.NEVER, 0.1F));
+			context.register(damageTypes.ANNIHILATE, new DamageType(namespaceUtils.dot(damageTypes.ANNIHILATE), DamageScaling.NEVER, 0.1F));
 		});
 	}
 
