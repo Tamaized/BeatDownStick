@@ -25,7 +25,6 @@ public class RegistryProvider {
 	@PostConstruct
 	private void setup() {
 		builder = damageTypeBootstrap.bootstrap(builder);
-
 	}
 
 	public CompletableFuture<HolderLookup.Provider> retrieve(GatherDataEvent event) {
