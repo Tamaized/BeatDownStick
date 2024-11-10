@@ -17,6 +17,6 @@ public class ModSounds {
 
 	private DeferredRegister<SoundEvent> REGISTRY = RegUtil.create(Registries.SOUND_EVENT);
 
-	public final Supplier<SoundEvent> WHAM = REGISTRY.register("item.beatdownstick.wham", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(BeatDownStick.MODID, "item.beatdownstick.wham")));
+	public final Supplier<SoundEvent> WHAM = REGISTRY.register("item.wham", () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(BeatDownStick.MODID, "item.wham")));
 
 }
