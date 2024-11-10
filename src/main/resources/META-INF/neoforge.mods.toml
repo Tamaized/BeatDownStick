@@ -13,7 +13,7 @@ license="All Rights Reserved"
     Adds a Stick called the Beat Down Stick to annihilate your foes, including Creative Mode Players
     '''
 
-[[dependencies.melongolem]]
+[[dependencies.beatdownstick]]
     modId="neoforge"
     type="required"
     versionRange="[21,)"

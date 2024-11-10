@@ -61,14 +61,38 @@ java {
 
 compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
 
+sourceSets {
+	data {
+		compileClasspath += main.compileClasspath + main.output
+
+		java {
+			srcDirs = ['src/main/java', 'src/data/java']
+		}
+		resources {
+			srcDirs = ['src/main/resources']
+		}
+	}
+}
+
+configurations {
+	dataImplementation.extendsFrom implementation
+}
+
 neoForge {
 	version = project.neoforge_version
 
 	validateAccessTransformers = true
 
+	addModdingDependenciesTo sourceSets.data
+
 	mods {
 		"${project.mod_id}" {
 			sourceSet this.sourceSets.main
+		}
+
+		"${project.mod_id}-data" {
+			sourceSet this.sourceSets.main
+			sourceSet this.sourceSets.data
 		}
 	}
 
@@ -91,11 +115,15 @@ neoForge {
 		}
 	}
 
+	def mainMod = mods."${project.mod_id}"
+	def dataMod = mods."${project.mod_id}-data"
+
 	runs {
 		configureEach {
 			gameDirectory = project.file('run')
 			systemProperty 'forge.logging.console.level', 'debug'
 			logLevel = org.slf4j.event.Level.DEBUG
+			mods = [mainMod]
 		}
 
 		client {
@@ -113,7 +141,10 @@ neoForge {
 		data {
 			data()
 			gameDirectory = project.file('run-data')
+			systemProperty 'forge.logging.marker.scan', 'ACCEPT'
 			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+			sourceSet = this.sourceSets.data
+			mods = [dataMod]
 		}
 	}
 }
@@ -130,6 +161,8 @@ repositories {
 }
 
 dependencies {
+	compileOnly "net.neoforged.moddev:net.neoforged.moddev.gradle.plugin:${project.mdg_version}"
+
 	runtimeOnly "mezz.jei:jei-${project.base_minecraft_version}-neoforge:${project.jei_version}"
 
 	def beanification = "tamaized:beanification:${project.minecraft_version}-${project.beanification_version}"
@@ -196,6 +229,8 @@ publishing {
 			afterEvaluate {
 				artifact this.project.jar
 				artifact this.project.sourceJar
+				artifact this.project.dataJar
+				artifact this.project.dataSourceJar
 			}
 			groupId 'tamaized'
 			artifactId this.project.mod_id
@@ -216,6 +251,18 @@ tasks.register('sourceJar', Jar) {
 	dependsOn 'classes'
 	from sourceSets.main.allSource
 	archiveClassifier = 'sources'
+}
+
+tasks.register('dataJar', Jar) {
+	dependsOn 'classes'
+	from sourceSets.data.output
+	archiveClassifier = 'data'
+}
+
+tasks.register('dataSourceJar', Jar) {
+	dependsOn 'classes'
+	from sourceSets.data.allSource
+	archiveClassifier = 'data-sources'
 }
 
 tasks.withType(JavaCompile).configureEach {
