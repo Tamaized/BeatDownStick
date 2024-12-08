@@ -8,8 +8,6 @@ import tamaized.beanification.Component;
 import tamaized.beatdownstick.common.items.ItemBeatDownStick;
 import tamaized.regutil.RegUtil;
 
-import java.util.function.Supplier;
-
 @Component
 public class ModItems {
 
