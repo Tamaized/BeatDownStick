@@ -13,8 +13,10 @@ import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
 import tamaized.beanification.Autowired;
+import tamaized.beanification.Configurable;
 import tamaized.beatdownstick.registry.ModItems;
 
+@Configurable
 public class BeatDownStickModifier extends LootModifier {
 
 	public static final MapCodec<BeatDownStickModifier> CODEC = RecordCodecBuilder.mapCodec(inst -> LootModifier.codecStart(inst).and(
@@ -22,7 +24,7 @@ public class BeatDownStickModifier extends LootModifier {
 	).apply(inst, BeatDownStickModifier::new));
 
 	@Autowired
-	private static ModItems items;
+	private ModItems items;
 
 	private final float chance;
 

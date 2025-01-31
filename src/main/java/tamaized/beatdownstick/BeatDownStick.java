@@ -10,14 +10,7 @@ public class BeatDownStick {
 	public static final String MODID = "beatdownstick";
 
 	static {
-		BeanContext.configure()
-				.configurableSettings().disableEntity()
-				.configurableSettings().disableRenderer();
-
 		BeanContext.init();
-	}
-
-	public BeatDownStick() {
 		RegUtil.setup();
 	}
 

@@ -1,4 +1,14 @@
-import org.jetbrains.gradle.ext.JUnit
+buildscript {
+	repositories{
+		maven {
+			name 'Beanification'
+			url 'https://maven.tamaized.com/releases/'
+		}
+	}
+	dependencies {
+		classpath "tamaized:beanification:${minecraft_version}-${beanification_version}:gradle"
+	}
+}
 
 plugins {
 	id 'java-library'
@@ -11,6 +21,8 @@ plugins {
 	id 'com.gradleup.shadow' version '8.3.3'
 }
 
+apply plugin: 'tamaized.beanification'
+
 configurations {
 	shade
 }
@@ -18,8 +30,8 @@ configurations {
 shadowJar {
 	archiveClassifier.set('')
 	configurations = [project.configurations.shade]
-	relocate 'tamaized.beanification', "tamaized.${project.mod_id}.beanification"
-	relocate 'tamaized.regutil', "tamaized.${project.mod_id}.regutil"
+	relocate 'tamaized.beanification', "tamaized.${mod_id}.beanification"
+	relocate 'tamaized.regutil', "tamaized.${mod_id}.regutil"
 }
 
 def secrets = new Properties()
@@ -86,6 +98,7 @@ configurations {
 }
 
 neoForge {
+	def mod_id = project.mod_id
 	version = project.neoforge_version
 
 	validateAccessTransformers = true
@@ -93,44 +106,30 @@ neoForge {
 	addModdingDependenciesTo sourceSets.data
 
 	mods {
-		"${project.mod_id}" {
-			sourceSet this.sourceSets.main
+		"${mod_id}" {
+			it.sourceSet this.sourceSets.main
 		}
 
-		"${project.mod_id}-data" {
-			sourceSet this.sourceSets.main
-			sourceSet this.sourceSets.data
-		}
-	}
-
-	unitTest {
-		enable()
-		testedMod = mods."${project.mod_id}"
-		project.afterEvaluate {
-			idea {
-				project {
-					settings {
-						runConfigurations {
-							defaults(JUnit) {
-								vmParameters += " -Dforge.logging.console.level=debug"
-								vmParameters += " -Dforge.logging.marker.scan=ACCEPT"
-							}
-						}
-					}
-				}
-			}
+		"${mod_id}-data" {
+			it.sourceSet this.sourceSets.main
+			it.sourceSet this.sourceSets.data
 		}
 	}
 
 	def mainMod = mods."${project.mod_id}"
 	def dataMod = mods."${project.mod_id}-data"
 
+	unitTest {
+		enable()
+		testedMod = mainMod
+	}
+
 	runs {
 		configureEach {
 			gameDirectory = project.file('run')
 			systemProperty 'forge.logging.console.level', 'debug'
 			logLevel = org.slf4j.event.Level.DEBUG
-			mods = [mainMod]
+			loadedMods = [mainMod]
 		}
 
 		client {
@@ -150,7 +149,7 @@ neoForge {
 			gameDirectory = project.file('run-data')
 			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
 			sourceSet = this.sourceSets.data
-			mods = [dataMod]
+			loadedMods = [dataMod]
 		}
 	}
 }
@@ -205,10 +204,12 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 processResources {
 	def version = project.version
-	filesMatching("META-INF/neoforge.mods.toml") {
-		expand([
-			'file': ['jarVersion': "${version}"]
-		])
+	doLast {
+		filesMatching("META-INF/neoforge.mods.toml") {
+			expand([
+				'file': ['jarVersion': "${version}"]
+			])
+		}
 	}
 }
 
