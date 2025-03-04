@@ -7,7 +7,6 @@ license="All Rights Reserved"
     modId="beatdownstick"
     version="${file.jarVersion}"
     displayName="Beat Down Stick"
-	updateJSONURL = "https://gh.tamaized.com/Tamaized/BeatDownStick/update.json?m=${m}&l=${l}&v=${v}"
     credits=""
     authors="Tamaized"
     description='''
