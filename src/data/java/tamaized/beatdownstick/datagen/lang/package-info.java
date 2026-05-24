@@ -2,7 +2,7 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 @TypeUseAreNonnullByDefault
-package tamaized.beatdownstick.common;
+package tamaized.beatdownstick.datagen.lang;
 
 import com.mojang.logging.annotations.FieldsAreNonnullByDefault;
 import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;
