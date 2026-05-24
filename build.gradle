@@ -1,12 +1,15 @@
+import com.github.jengelman.gradle.plugins.shadow.relocation.SimpleRelocator
+
 buildscript {
-	repositories{
+	repositories {
+		mavenLocal()
 		maven {
 			name 'Beanification'
 			url 'https://maven.tamaized.com/releases/'
 		}
 	}
 	dependencies {
-		classpath "tamaized:beanification:${minecraft_version}-${beanification_version}:gradle"
+		classpath "tamaized:beanification:${beanification_gradle_plugin_version}:gradle"
 	}
 }
 
@@ -18,20 +21,35 @@ plugins {
 	// Version List: https://projects.neoforged.net/neoforged/ModDevGradle
 	id 'net.neoforged.moddev' version "${mdg_version}"
 	id "com.dorongold.task-tree" version "4.0.0"
-	id 'com.gradleup.shadow' version '8.3.3'
+	id 'com.gradleup.shadow' version "${shadowjar_version}"
 }
 
 apply plugin: 'tamaized.beanification'
+
+repositories {
+	gradlePluginPortal()
+}
+
+dependencies { // Forces intellij to grab sources for the gradle build script
+	compileOnly "com.gradleup.shadow:shadow-gradle-plugin:${shadowjar_version}"
+}
+
+wrapper {
+	gradleVersion = '9.1.0'
+	distributionType = Wrapper.DistributionType.ALL
+}
 
 configurations {
 	shade
 }
 
 shadowJar {
+	mustRunAfter jar
 	archiveClassifier.set('')
 	configurations = [project.configurations.shade]
-	relocate 'tamaized.beanification', "tamaized.${mod_id}.beanification"
-	relocate 'tamaized.regutil', "tamaized.${mod_id}.regutil"
+	relocate(new SimpleRelocator('tamaized', 'tamaized.beatdownstick')) {
+		exclude 'tamaized.beatdownstick.**'
+	}
 }
 
 def secrets = new Properties()
@@ -67,7 +85,7 @@ base {
 
 java {
 	toolchain {
-		languageVersion.set(JavaLanguageVersion.of(21))
+		languageVersion.set(JavaLanguageVersion.of(25))
 	}
 }
 
@@ -122,6 +140,7 @@ neoForge {
 	unitTest {
 		enable()
 		testedMod = mainMod
+		loadedMods = [mainMod]
 	}
 
 	runs {
@@ -145,7 +164,7 @@ neoForge {
 		}
 
 		data {
-			data()
+			clientData()
 			gameDirectory = project.file('run-data')
 			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
 			sourceSet = this.sourceSets.data
@@ -156,7 +175,7 @@ neoForge {
 
 repositories {
 	maven {
-		name 'Tama\'s Maven' // Beanification, RegUtil
+		name 'Tama\'s Maven'
 		url 'https://maven.tamaized.com/releases/'
 	}
 	maven {
@@ -166,24 +185,21 @@ repositories {
 }
 
 dependencies {
-	compileOnly "net.neoforged.moddev:net.neoforged.moddev.gradle.plugin:${project.mdg_version}"
+//	runtimeOnly "mezz.jei:jei-${project.base_minecraft_version}-neoforge:${project.jei_version}"
 
-	runtimeOnly "mezz.jei:jei-${project.base_minecraft_version}-neoforge:${project.jei_version}"
+	def regUtil = "tamaized:regutil:${project.regutil_version}"
+	implementation regUtil
+	shade regUtil
 
-	def beanification = "tamaized:beanification:${project.minecraft_version}-${project.beanification_version}"
-	implementation beanification
-	shade beanification
+	def beanification = "tamaized:beanification:"
 	testImplementation "${beanification}:tests"
 	testCompileOnly "${beanification}:test-sources"
 
-	def reg = "tamaized:regutil:${project.minecraft_version}-${project.regutil_version}"
-	implementation reg
-	shade reg
-
-	testImplementation group: 'net.neoforged', name: 'testframework', version: project.neoforge_version
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.10.3'
-	testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.3'
-	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.12.0'
+	testImplementation "net.neoforged:testframework:${project.neoforge_version}"
+	testImplementation "org.junit.jupiter:junit-jupiter:6.0.1"
+	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:6.0.1"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher:6.0.1"
+	testImplementation "org.mockito:mockito-junit-jupiter:5.21.0"
 }
 
 test {
@@ -200,13 +216,16 @@ test {
 	}
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+sourceSets.main.resources {
+	srcDir 'src/generated/resources'
+	exclude '.cache'
+}
 
 processResources {
 	def ver = project.version
 	filesMatching("META-INF/neoforge.mods.toml") {
 		expand([
-			'file'           : [
+			'file': [
 				'jarVersion': ver
 			]
 		])
@@ -234,13 +253,35 @@ publishing {
 	publications {
 		create('mavenJava', MavenPublication) {
 			afterEvaluate {
-				artifact this.project.jar
+				artifact this.project.shadowJar
 				artifact this.project.sourceJar
 				artifact this.project.dataJar
 				artifact this.project.dataSourceJar
 			}
 			groupId 'tamaized'
 			artifactId this.project.mod_id
+
+			def depsProvider = this.project.provider {
+				[
+					regutil_version: this.project.regutil_version
+				]
+			}
+
+			pom.withXml {
+				def dependenciesNode = asNode().appendNode('dependencies')
+
+				def addDep = { String group, String name, String version ->
+					def depNode = dependenciesNode.appendNode('dependency')
+					depNode.appendNode('groupId', group)
+					depNode.appendNode('artifactId', name)
+					depNode.appendNode('version', version)
+					depNode.appendNode('scope', 'compile')
+				}
+
+				def deps = depsProvider.get()
+
+				addDep('tamaized', 'regutil', deps.regutil_version)
+			}
 		}
 	}
 	repositories {
