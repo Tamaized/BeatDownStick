@@ -1,8 +1,8 @@
-package tamaized.beatdownstick.datagen.tag;
+package tamaized.beatdownstick.datagen.data.tag;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.data.tags.KeyTagProvider;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageType;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -10,8 +10,8 @@ import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
 import tamaized.beatdownstick.BeatDownStick;
 import tamaized.beatdownstick.datagen.RegistryProvider;
-import tamaized.beatdownstick.datagen.util.TagProviderUtil;
 import tamaized.beatdownstick.registry.ModDamageTypes;
+import tamaized.datagenutil.data.tag.TagProviderUtil;
 
 @Component
 public class DamageTypeTagProviderFactory {
@@ -25,13 +25,12 @@ public class DamageTypeTagProviderFactory {
 	@Autowired
 	private TagProviderUtil tagProviderUtil;
 
-	public TagsProvider<DamageType> make(GatherDataEvent event) {
-		return new TagsProvider<>(
+	public KeyTagProvider<DamageType> make(GatherDataEvent.Client event) {
+		return new KeyTagProvider<>(
 			event.getGenerator().getPackOutput(),
 			Registries.DAMAGE_TYPE,
 			registryProvider.retrieve(event),
-			BeatDownStick.MODID,
-			event.getExistingFileHelper()
+			BeatDownStick.MODID
 		) {
 			@Override
 			protected void addTags(HolderLookup.Provider provider) {

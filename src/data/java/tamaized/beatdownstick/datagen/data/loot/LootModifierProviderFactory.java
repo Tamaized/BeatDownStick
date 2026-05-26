@@ -1,10 +1,13 @@
-package tamaized.beatdownstick.datagen.loot;
+package tamaized.beatdownstick.datagen.data.loot;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import tamaized.beanification.Autowired;
@@ -23,7 +26,7 @@ public class LootModifierProviderFactory {
 	@Autowired
 	private NamespaceUtils namespaceUtils;
 
-	public GlobalLootModifierProvider make(GatherDataEvent event) {
+	public GlobalLootModifierProvider make(GatherDataEvent.Client event) {
 		return new GlobalLootModifierProvider(
 			event.getGenerator().getPackOutput(),
 			registryProvider.retrieve(event),
@@ -43,8 +46,9 @@ public class LootModifierProviderFactory {
 
 			private void add(ResourceKey<LootTable> table, float chance) {
 				add(namespaceUtils.slash(table), new BeatDownStickModifier(new LootItemCondition[]{
-					LootTableIdCondition.builder(table.location()).build()
-				}, chance));
+					LootTableIdCondition.builder(table.identifier()).build(),
+					LootItemRandomChanceCondition.randomChance(chance).build()
+				}, IGlobalLootModifier.DEFAULT_PRIORITY));
 			}
 		};
 	}

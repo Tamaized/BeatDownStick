@@ -1,8 +1,10 @@
 package tamaized.beatdownstick.common.items;
 
+import com.google.common.base.MoreObjects;
 import net.minecraft.core.Holder;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -39,32 +41,34 @@ public class ItemBeatDownStick extends Item {
 
 	@Override
 	public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+		if (!(entity.level() instanceof ServerLevel serverLevel))
+			return false;
 		boolean flag = false;
 		float dmg;
-		boolean dontOneShot = entity.getType().is(tags.DONT_ONE_SHOT);
+		boolean dontOneShot = entity.getType().getTags().anyMatch(tags.DONT_ONE_SHOT::equals);
 		DamageSource source = this.superStick ? player.damageSources().source(damageTypes.ANNIHILATE) : player.damageSources().generic();
 		if (entity instanceof LivingEntity living) {
 			dmg = this.superStick ? Float.MAX_VALUE : dontOneShot ? (living.getMaxHealth() / 10) : (living.getMaxHealth()); // do 10% instead of 100% dmg to bosses
 			player.playSound(sounds.WHAM.get(), 0.6F, 0.5F + player.getRandom().nextFloat());
-			if (living.hurt(source, dmg))
+			if (living.hurtServer(serverLevel, source, dmg))
 				flag = true;
 		} else if (entity instanceof PartEntity<?> part) {
 			if (part.getParent() instanceof EnderDragon dragon) { // Must be DamageSource.Player for dragon
 				player.playSound(sounds.WHAM.get(), 0.6F, 0.5F + player.getRandom().nextFloat());
-				if (part.hurt(player.damageSources().playerAttack(player), this.superStick ? Float.MAX_VALUE : (dragon.getMaxHealth() / 10)))
+				if (part.hurtServer(serverLevel, player.damageSources().playerAttack(player), this.superStick ? Float.MAX_VALUE : (dragon.getMaxHealth() / 10)))
 					flag = true;
 			} else if (part.getParent() instanceof LivingEntity living) {
 				dmg = this.superStick ? Float.MAX_VALUE : dontOneShot ? (living.getMaxHealth() / 10) : (living.getMaxHealth());
 				player.playSound(sounds.WHAM.get(), 0.6F, 0.5F + player.getRandom().nextFloat());
-				if (living.hurt(source, dmg))
+				if (living.hurtServer(serverLevel, source, dmg))
 					flag = true;
 			}
 		}
 		if (flag) {
 			if (!player.getAbilities().instabuild && !this.superStick)
-				stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(player.swingingArm));
+				stack.hurtAndBreak(1, player, MoreObjects.firstNonNull(player.swingingArm, InteractionHand.MAIN_HAND).asEquipmentSlot());
 			if (player.level() instanceof ServerLevel server) {
-				server.getChunkSource().broadcastAndSend(player, new ClientboundAnimatePacket(entity, 5));
+				server.getChunkSource().sendToTrackingPlayersAndSelf(player, new ClientboundAnimatePacket(entity, ClientboundAnimatePacket.MAGIC_CRITICAL_HIT));
 			}
 			return true;
 		}
@@ -74,16 +78,6 @@ public class ItemBeatDownStick extends Item {
 	@Override
 	public boolean isFoil(ItemStack stack) {
 		return superStick || super.isFoil(stack);
-	}
-
-	@Override
-	public boolean isEnchantable(ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
 	}
 
 	@Override

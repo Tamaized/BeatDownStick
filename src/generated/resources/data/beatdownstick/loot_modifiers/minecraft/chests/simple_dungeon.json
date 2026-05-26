@@ -1,10 +1,13 @@
 {
   "type": "beatdownstick:loot_injection",
-  "chance": 0.05,
   "conditions": [
     {
       "condition": "neoforge:loot_table_id",
       "loot_table_id": "minecraft:chests/simple_dungeon"
+    },
+    {
+      "chance": 0.05,
+      "condition": "minecraft:random_chance"
     }
   ]
 }

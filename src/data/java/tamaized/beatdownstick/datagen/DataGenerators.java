@@ -5,41 +5,28 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
+import tamaized.beatdownstick.datagen.assets.AssetsGenerator;
+import tamaized.beatdownstick.datagen.data.DataGenerator;
 import tamaized.beatdownstick.datagen.generator.*;
 
 @Component
 public class DataGenerators {
 
 	@Autowired
-	private RegistryGenerator registry;
+	private RegistryProvider registryProvider;
 
 	@Autowired
-	private TagGenerator tags;
+	private AssetsGenerator assets;
 
 	@Autowired
-	private LootGenerator loot;
-
-	@Autowired
-	private BakedModelGenerator bakedModels;
-
-	@Autowired
-	private LangGenerator lang;
-
-	@Autowired
-	private MetadataGenerator metadata;
+	private DataGenerator data;
 
 	@PostConstruct
 	private void register(IEventBus bus) {
-		bus.addListener(GatherDataEvent.class, event -> {
-			registry.generate(event);
-
-			tags.generate(event);
-			loot.generate(event);
-
-			bakedModels.generate(event);
-			lang.generate(event);
-
-			metadata.generate(event);
+		bus.addListener(GatherDataEvent.Client.class, event -> {
+			registryProvider.retrieve(event);
+			assets.generate(event);
+			data.generate(event);
 		});
 	}
 

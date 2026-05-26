@@ -1,4 +1,4 @@
-package tamaized.beatdownstick.datagen.tag;
+package tamaized.beatdownstick.datagen.data.tag;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
@@ -21,12 +21,11 @@ public class ModEntityTypeTagsProviderFactory {
 	@Autowired
 	private ModTags tags;
 
-	public TagsProvider<EntityType<?>> make(GatherDataEvent event) {
+	public TagsProvider<EntityType<?>> make(GatherDataEvent.Client event) {
 		return new EntityTypeTagsProvider(
 			event.getGenerator().getPackOutput(),
 			registryProvider.retrieve(event),
-			BeatDownStick.MODID,
-			event.getExistingFileHelper()
+			BeatDownStick.MODID
 		) {
 			@Override
 			protected void addTags(HolderLookup.Provider provider) {

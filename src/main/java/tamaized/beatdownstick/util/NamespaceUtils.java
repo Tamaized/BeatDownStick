@@ -1,7 +1,7 @@
 package tamaized.beatdownstick.util;
 
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import tamaized.beanification.Component;
 import tamaized.beatdownstick.BeatDownStick;
 
@@ -9,18 +9,18 @@ import tamaized.beatdownstick.BeatDownStick;
 public class NamespaceUtils {
 
 	public String dot(ResourceKey<?> key) {
-		return dot(key.location());
+		return dot(key.identifier());
 	}
 
-	public String dot(ResourceLocation key) {
+	public String dot(Identifier key) {
 		return key.getNamespace() + "." + key.getPath();
 	}
 
 	public String slash(ResourceKey<?> key) {
-		return slash(key.location());
+		return slash(key.identifier());
 	}
 
-	public String slash(ResourceLocation key) {
+	public String slash(Identifier key) {
 		return key.getNamespace() + "/" + key.getPath();
 	}
 

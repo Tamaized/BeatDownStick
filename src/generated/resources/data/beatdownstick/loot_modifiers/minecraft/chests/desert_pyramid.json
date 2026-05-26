@@ -1,10 +1,13 @@
 {
   "type": "beatdownstick:loot_injection",
-  "chance": 0.1,
   "conditions": [
     {
       "condition": "neoforge:loot_table_id",
       "loot_table_id": "minecraft:chests/desert_pyramid"
+    },
+    {
+      "chance": 0.1,
+      "condition": "minecraft:random_chance"
     }
   ]
 }

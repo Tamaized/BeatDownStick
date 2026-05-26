@@ -10,6 +10,7 @@ import tamaized.beanification.PostConstruct;
 import tamaized.beatdownstick.BeatDownStick;
 import tamaized.beatdownstick.datagen.bootstrap.DamageTypeBootstrap;
 
+import javax.annotation.Nullable;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -20,6 +21,8 @@ public class RegistryProvider {
 	private DamageTypeBootstrap damageTypeBootstrap;
 
 	private RegistrySetBuilder builder = new RegistrySetBuilder();
+
+	@Nullable
 	private DatapackBuiltinEntriesProvider value;
 
 	@PostConstruct
@@ -27,10 +30,10 @@ public class RegistryProvider {
 		builder = damageTypeBootstrap.bootstrap(builder);
 	}
 
-	public CompletableFuture<HolderLookup.Provider> retrieve(GatherDataEvent event) {
+	public CompletableFuture<HolderLookup.Provider> retrieve(GatherDataEvent.Client event) {
 		if (value == null) {
 			value = new DatapackBuiltinEntriesProvider(event.getGenerator().getPackOutput(), event.getLookupProvider(), builder, Set.of("minecraft", BeatDownStick.MODID));
-			event.getGenerator().addProvider(event.includeServer(), value);
+			event.getGenerator().addProvider(true, value);
 		}
 		return value.getRegistryProvider();
 	}

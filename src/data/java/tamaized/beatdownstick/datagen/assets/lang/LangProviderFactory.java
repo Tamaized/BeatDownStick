@@ -1,4 +1,4 @@
-package tamaized.beatdownstick.datagen.lang;
+package tamaized.beatdownstick.datagen.assets.lang;
 
 import net.minecraft.locale.Language;
 import net.minecraft.resources.ResourceKey;
@@ -25,7 +25,7 @@ public class LangProviderFactory {
 	@Autowired
 	private ModSounds sounds;
 
-	public LanguageProvider make(GatherDataEvent event) {
+	public LanguageProvider make(GatherDataEvent.Client event) {
 		return new LanguageProvider(
 			event.getGenerator().getPackOutput(),
 			BeatDownStick.MODID,
@@ -42,11 +42,11 @@ public class LangProviderFactory {
 			}
 
 			private void addDeathMessage(ResourceKey<DamageType> key, String translation) {
-				add(key.location().toLanguageKey("death.attack"), translation);
+				add(key.identifier().toLanguageKey("death.attack"), translation);
 			}
 
 			private void addSubtitle(SoundEvent key, String translation) {
-				add(key.getLocation().toLanguageKey("subtitles"), translation);
+				add(key.location().toLanguageKey("subtitles"), translation);
 			}
 		};
 	}
